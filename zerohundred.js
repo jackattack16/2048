@@ -30,6 +30,7 @@ function updateBoard() {
       }
     }
 }
+document.getElementById('textBoard').innerText = board[0] + "\n" + board[1] + "\n" + board[2] + "\n" + board[3];
 }
 // -1 for rand, row and coll is betwen 1 & 4, inclusive. 
 function randCell(row, coll) {
@@ -143,6 +144,66 @@ function left() {
 updateBoard();
 }
 
+function up() {
+  for (let coll = 0; coll < 4; coll++) {
+    let currColl = [];
+    for (let row = 0; row < 4; row++) {
+      currColl.push(board[row][coll]);
+    }
+    
+    let rowElements = currColl.filter(element => element !== 0);
+    while (rowElements.length < currColl.length) {
+      rowElements.push(0);
+  }
+  currColl = rowElements;
+  for (let i = 0; i < currColl.length - 1; i++) {
+      if (rowElements[i] === rowElements[i + 1]) {
+        rowElements[i] *= 2;
+        rowElements[i + 1] = 0;
+      }
+    }
+    
+    rowElements = rowElements.filter(element => element !== 0);
+    while (rowElements.length < currColl.length) {
+      rowElements.push(0);
+}
+    for (let row = 0; row < 4; row++) {
+      board[row][coll] = rowElements[row];
+    }
+}
+updateBoard();
+}
+
+function down() {
+  for (let coll = 0; coll < 4; coll++) {
+    let currColl = [];
+    for (let row = 0; row < 4; row++) {
+      currColl.push(board[row][coll]);
+    }
+    
+    let rowElements = currColl.filter(element => element !== 0);
+    while (rowElements.length < currColl.length) {
+      rowElements.unshift(0);
+  }
+ 
+  for (let i = currColl.length - 1; i > 0; i--) {
+      if (rowElements[i] === rowElements[i - 1]) {
+        rowElements[i] *= 2;
+        rowElements[i - 1] = 0;
+      }
+    }
+    
+    rowElements = rowElements.filter(element => element !== 0);
+    while (rowElements.length < currColl.length) {
+      rowElements.unshift(0);
+  }
+  for (let row = 0; row < 4; row++) {
+      board[row][coll] = rowElements[row];
+    }
+}
+updateBoard();
+  }
+  
 document.addEventListener('keydown', function (event) {
   if (event.key === 'ArrowRight') {
     right();
@@ -153,5 +214,16 @@ document.addEventListener('keydown', function (event) {
   if (event.key === 'ArrowLeft') {
     left();
     doshit();
+  }
+});
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'ArrowUp') {
+    up();
+    doshit();
+  }
+});
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'ArrowDown') {
+    down();
   }
 });
