@@ -4,7 +4,19 @@ let board = [
   [0,0,0,0],
   [0,0,0,0]
   ];
-
+const numToColour = {
+  2: "#a5e8d3",
+  4: "#63c2a4",
+  8: "#63c2c2",
+  16: "#4bc4c4",
+  32: "#32abad",
+  64: "#368ac2",
+  128: "#2376ad",
+  256: "#173dad",
+  512: "#1425b8",
+  1024: "#4014b8",
+  2048: "#a5e8d3",
+}
 function doshit() {
   let startCell1 = randCell(-1, -1).split(".");
   while(board[startCell1[0]-1][startCell1[1]-1] !== 0) {
@@ -25,8 +37,11 @@ function updateBoard() {
   for (let j = 1; j < 5; j++) {
     var parentElement = document.getElementById('row' + j);
     for (var i = 0; i < parentElement.children.length; i++) {
+      parentElement.children[i].style.background = "#ffffff";
       if (board[j-1][i] !== 0) {
         parentElement.children[i].innerText = board[j-1][i];
+        parentElement.children[i].style.background = numToColour[board[j-1][i]];
+      //  alert(numToColour[board[j-1][i]]);
       }
     }
 }
