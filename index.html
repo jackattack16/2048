@@ -3,20 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <style>
-table, th, td {
-  border:1px solid black;
-}
-td {
-  width: 50px;
-  height: 50px;
-  text-align: center;
-}
-</style>
 <script src="./zerohundred.js"></script>
+<link rel="stylesheet" href="./fourghtyEight.css"/>
 </head>
 <body onload="startGame()">
-  <table id="game">
+  <table id="game" class="game">
+    <tr>
+      <th colspan="4" class="title">2048</th>
+    </tr>
+    <tr class="score">
+      <th colspan="2" id="score"></th>
+      <th colspan="2" id="highScore"></th>
+    </tr>
     <tr id="row1">
       <td id="1.1"></td>
       <td id="1.2"></td>
@@ -42,8 +40,5 @@ td {
       <td id="4.4"></td>
     </tr>
   </table>
-  <button onclick="doshit()">generate cell</button>
-  <button onclick="clearBoard(true)">clear board</button>
-  <p id="textBoard"></p>
 </body>
 </html>

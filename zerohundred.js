@@ -5,18 +5,26 @@ let board = [
   [0,0,0,0]
   ];
 const numToColour = {
-  2: "#a5e8d3",
-  4: "#63c2a4",
-  8: "#63c2c2",
-  16: "#4bc4c4",
-  32: "#32abad",
-  64: "#368ac2",
-  128: "#2376ad",
-  256: "#173dad",
-  512: "#1425b8",
-  1024: "#4014b8",
-  2048: "#a5e8d3",
-}
+  0: ["#ffffff", "225%", "white"],
+  2: ["#a5e8d3", "225%", "black"],
+  4: ["#63c2a4", "225%", "black"],
+  8: ["#63c2c2", "225%", "black"],
+  16: ["#4bc4c4", "225%", "black"],
+  32: ["#32abad", "225%", "black"],
+  64: ["#368ac2", "225%", "black"],
+  128: ["#2376ad", "225%", "black"],
+  256: ["#173dad", "225%", "black"],
+  512: ["#0f1fa6", "225%", "black"],
+  1024: ["#3c0fa6", "175%", "black"],
+  2048: ["#580fa6", "175%", "black"],
+  4096: ["#6f30b3", "175%", "black"],
+  8192: ["#8530b3", "175%", "black"],
+  16384: ["#a230b3", "125%", "black"],
+  32768: ["#c920b0", "125%", "black"],
+  65536: ["#ff006f", "125%", "black"],
+};
+let score = 0;
+let highScore = localStorage.getItem('highScore');
 function doshit() {
   let startCell1 = randCell(-1, -1).split(".");
   while(board[startCell1[0]-1][startCell1[1]-1] !== 0) {
@@ -29,7 +37,7 @@ function doshit() {
 function startGame() {
   doshit();
   doshit();
-  updateBoard();
+  updateScore();
 }
 
 function updateBoard() {
@@ -38,15 +46,37 @@ function updateBoard() {
     var parentElement = document.getElementById('row' + j);
     for (var i = 0; i < parentElement.children.length; i++) {
       parentElement.children[i].style.background = "#ffffff";
-      if (board[j-1][i] !== 0) {
         parentElement.children[i].innerText = board[j-1][i];
-        parentElement.children[i].style.background = numToColour[board[j-1][i]];
-      //  alert(numToColour[board[j-1][i]]);
+        parentElement.children[i].style.background = numToColour[board[j-1][i]][0];
+        parentElement.children[i].style.fontSize = numToColour[board[j-1][i]][1];
+        parentElement.children[i].style.color = numToColour[board[j-1][i]][2];
+        
       }
-    }
+      }
+updateScore();
 }
-document.getElementById('textBoard').innerText = board[0] + "\n" + board[1] + "\n" + board[2] + "\n" + board[3];
+
+function updateScore() {
+  if (highScore < score) {
+    highScore = score;
+    localStorage.setItem('highScore', highScore);
+  }
+  document.getElementById('score').innerText = "Score: " + score;
+  document.getElementById('highScore').innerText = "Best: " + highScore;
 }
+
+function rlyBigNum(num) {
+  let destructNum = num;
+  let count = 1;
+  while (destructNum !== 2048) {
+    count++;
+    destructNum = destructNum/2;
+  }
+  alert(changeHue("#580fa6", count*10));
+  }
+  
+
+
 // -1 for rand, row and coll is betwen 1 & 4, inclusive. 
 function randCell(row, coll) {
   
@@ -104,11 +134,9 @@ function right() {
     while (rowElements.length < board[row].length) {
       rowElements.unshift(0);
     }
-  
-  board[row] = rowElements;
-  //merging like terms
-  for (let i = board[row].length - 1; i > 0; i--) {
+  for (let i = rowElements.length - 1; i > 0; i--) {
       if (rowElements[i] === rowElements[i - 1]) {
+        score += rowElements[i]*2;
         rowElements[i] *= 2;
         rowElements[i - 1] = 0;
       }
@@ -130,16 +158,17 @@ function right() {
 
 function left() {
   for (let row = 0; row < 4; row++) {
+    
   //shift zeros to the right side of the array
   let rowElements = board[row].filter(element => element !== 0);
   while (rowElements.length < board[row].length) {
       rowElements.push(0);
   }
-  //updateBoard with new row
-  board[row] = rowElements;
-  //merge like terms
+  
+  
   for (let i = 0; i < board[row].length - 1; i++) {
       if (rowElements[i] === rowElements[i + 1]) {
+        score += rowElements[i]*2;
         rowElements[i] *= 2;
         rowElements[i + 1] = 0;
       }
@@ -173,6 +202,7 @@ function up() {
   currColl = rowElements;
   for (let i = 0; i < currColl.length - 1; i++) {
       if (rowElements[i] === rowElements[i + 1]) {
+        score += rowElements[i]*2;
         rowElements[i] *= 2;
         rowElements[i + 1] = 0;
       }
@@ -203,6 +233,7 @@ function down() {
  
   for (let i = currColl.length - 1; i > 0; i--) {
       if (rowElements[i] === rowElements[i - 1]) {
+        score += rowElements[i]*2;
         rowElements[i] *= 2;
         rowElements[i - 1] = 0;
       }
@@ -242,3 +273,65 @@ document.addEventListener('keydown', function (event) {
     down();
   }
 });
+
+
+//from https://stackoverflow.com/questions/17433015/change-the-hue-of-a-rgb-color-in-javascript
+
+function changeHue(rgb, degree) {
+    var hsl = rgbToHSL(rgb);
+    hsl.h += degree;
+    if (hsl.h > 360) {
+        hsl.h -= 360;
+    }
+    else if (hsl.h < 0) {
+        hsl.h += 360;
+    }
+    return hslToRGB(hsl);
+}
+
+// exepcts a string and returns an object
+function rgbToHSL(rgb) {
+    // strip the leading # if it's there
+    rgb = rgb.replace(/^\s*#|\s*$/g, '');
+
+    // convert 3 char codes --> 6, e.g. `E0F` --> `EE00FF`
+    if(rgb.length == 3){
+        rgb = rgb.replace(/(.)/g, '$1$1');
+    }
+
+    var r = parseInt(rgb.substr(0, 2), 16) / 255,
+        g = parseInt(rgb.substr(2, 2), 16) / 255,
+        b = parseInt(rgb.substr(4, 2), 16) / 255,
+        cMax = Math.max(r, g, b),
+        cMin = Math.min(r, g, b),
+        delta = cMax - cMin,
+        l = (cMax + cMin) / 2,
+        h = 0,
+        s = 0;
+
+    if (delta == 0) {
+        h = 0;
+    }
+    else if (cMax == r) {
+        h = 60 * (((g - b) / delta) % 6);
+    }
+    else if (cMax == g) {
+        h = 60 * (((b - r) / delta) + 2);
+    }
+    else {
+        h = 60 * (((r - g) / delta) + 4);
+    }
+
+    if (delta == 0) {
+        s = 0;
+    }
+    else {
+        s = (delta/(1-Math.abs(2*l - 1)))
+    }
+
+    return {
+        h: h,
+        s: s,
+        l: l
+    }
+}

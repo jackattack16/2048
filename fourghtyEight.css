@@ -1,0 +1,40 @@
+table, th, td{
+  border: 1px solid black;
+  margin-left: 36vw;
+  border-radius: 5px ;
+  border-spacing: 10px;
+}
+td {
+  width: 20%;
+  height: 20%;
+  text-align: center;
+  max-height: 20%;
+  max-width: 20%;
+  min-height: 20%;
+  min-width: 20%;
+}
+body {
+  font-family: Monospace;
+  width: 100vw;
+  height:100vh;
+  overflow: hidden;
+  margin: 0;
+}
+.game {
+  margin-top: 15vh;
+  background: black;
+  height: 60vh;
+  width: 27vw;
+}
+.title {
+  height: 12.5%;
+  font-size: 300%; 
+  font-family: fantasy;
+  text-align: center;
+  padding: 1.5%;
+  background-color: #5ee092;
+}
+.score {
+  background:#5dbaae;
+  height: 7.5%;
+}
