@@ -25,6 +25,9 @@ const numToColour = {
 };
 let score = 0;
 let highScore = localStorage.getItem('highScore');
+let startX;
+  let startY;
+
 function doshit() {
   let startCell1 = randCell(-1, -1).split(".");
   while(board[startCell1[0]-1][startCell1[1]-1] !== 0) {
@@ -335,3 +338,34 @@ function rgbToHSL(rgb) {
         l: l
     }
 }
+
+
+//thx chatGPT for this codes
+
+  document.getElementById('swipe-area').addEventListener('touchstart', (e) => {
+    alert(6);
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  });
+
+  document.getElementById('swipe-area').addEventListener('touchend', (e) => {
+    const endX = e.changedTouches[0].clientX;
+    const endY = e.changedTouches[0].clientY;
+
+    const deltaX = endX - startX;
+    const deltaY = endY - startY;
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      if (deltaX > 0) {
+        alert('Swiped right!');
+      } else {
+        alert('Swiped left!');
+      }
+    } else {
+      if (deltaY > 0) {
+        alert('Swiped down!');
+      } else {
+        alert('Swiped up!');
+      }
+    }
+  });
