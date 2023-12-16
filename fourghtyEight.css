@@ -1,12 +1,11 @@
 table, th, td{
   border: 1px solid black;
-  margin-left: 36vw;
   border-radius: 5px ;
   border-spacing: 10px;
 }
 td {
   width: 20%;
-  height: 20%;
+  height: 18.75%;
   text-align: center;
   max-height: 20%;
   max-width: 20%;
@@ -22,9 +21,10 @@ body {
 }
 .game {
   margin-top: 15vh;
+  margin-left: 36vw;
   background: black;
-  height: 60vh;
-  width: 27vw;
+  height: 500px;
+  width: 350px;
 }
 .title {
   height: 12.5%;
@@ -37,4 +37,11 @@ body {
 .score {
   background:#5dbaae;
   height: 7.5%;
+}
+.controls {
+  height: 5%;
+  max-height: 5%;   
+  color: white;
+  font-weight: bold;
+  font-size: 250%;
 }
